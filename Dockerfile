@@ -1,5 +1,5 @@
 # Evolution API - Dockerfile para Render
-FROM atendai/evolution-api:latest
+FROM atendai/evolution-api:v1.8.2
 
 # Las variables de entorno se configurarán en Render
 # El puerto 8080 es el que usa Evolution API por defecto
