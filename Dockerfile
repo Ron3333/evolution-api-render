@@ -6,3 +6,13 @@ FROM atendai/evolution-api:latest
 EXPOSE 8080
 
 # El comando de inicio ya está configurado en la imagen base
+# Variables por defecto para SQLite
+ENV DATABASE_ENABLED=true
+ENV DATABASE_PROVIDER=sqlite
+ENV DATABASE_CONNECTION_URI=/evolution/store/evolution.db
+
+# Exponer el puerto
+EXPOSE 8080
+
+# Comando para iniciar
+CMD ["node", "dist/src/main.js"]
