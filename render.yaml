@@ -7,28 +7,58 @@ services:
     branch: main
     dockerfilePath: ./Dockerfile
     envVars:
+      # ========== AUTENTICACIÓN ==========
       - key: AUTHENTICATION_API_KEY
         generateValue: true
+      
+      # ========== URL DEL SERVICIO ==========
       - key: SERVER_URL
         value: https://evolution-api.onrender.com
+      
+      # ========== BASE DE DATOS SQLITE ==========
       - key: DATABASE_ENABLED
-        value: false
-      - key: LOG_LEVEL
-        value: ERROR,WARN,DEBUG,INFO
-      - key: LOG_COLOR
-        value: true
-      - key: DEL_INSTANCE
-        value: false
+        value: "true"                              # Cambiado: ACTIVAMOS DB
+      - key: DATABASE_PROVIDER
+        value: "sqlite"                            # Usa SQLite, no PostgreSQL
+      - key: DATABASE_CONNECTION_URI
+        value: "/evolution/store/evolution.db"     # Ruta donde se guarda el archivo .db
+      
+      # ========== QUÉ DATOS GUARDAR ==========
       - key: STORE_MESSAGES
-        value: true
+        value: "true"
       - key: STORE_CONTACTS
-        value: true
+        value: "true"
       - key: STORE_CHATS
-        value: true
+        value: "true"
+      
+      # ========== CONFIGURACIÓN DE INSTANCIA ==========
+      - key: DEL_INSTANCE
+        value: "false"                             # No eliminar instancia al cerrar
+      - key: QRCODE_EXPIRY
+        value: "120"                               # QR válido por 120 segundos
+      
+      # ========== LOGS ==========
+      - key: LOG_LEVEL
+        value: "INFO,ERROR,WARN,DEBUG"
+      - key: LOG_COLOR
+        value: "true"
+      
+      # ========== CORS ==========
       - key: CORS_ORIGIN
         value: "*"
       - key: CORS_METHODS
-        value: POST,GET,PUT,DELETE
+        value: "POST,GET,PUT,DELETE"
       - key: CORS_CREDENTIALS
-        value: true
+        value: "true"
+      
+      # ========== WEBHOOKS (opcional, después conectas con n8n) ==========
+      - key: WEBHOOK_GLOBAL_ENABLED
+        value: "false"                             # Pon "true" cuando necesites webhooks
+    
+    # ========== DISCO PERSISTENTE (CRÍTICO) ==========
+    disk:
+      name: evolution-data
+      mountPath: /evolution/store                  # Aquí se guarda la DB y sesiones
+      sizeGB: 1
+    
     healthCheckPath: /
